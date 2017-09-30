@@ -17,7 +17,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sName = '', sTitle = '', sDescription = '', arrKeywords = [], sCountry='', sCity='',sLanguage='', sIconPic='', sCoverPic='', sCoverColor = '';
-        let dbLatitude = 0, dbLongitude = 0, arrAdditionalInfo = {} ;
+        let dbLatitude = 0, dbLongitude = 0, additionalInfo = {} ;
 
         let parent = '';
 
@@ -41,16 +41,16 @@ module.exports = {
             sCoverPic = req.body.coverPic || '';
             sCoverColor = req.body.coverColor || '';
 
-            arrAdditionalInfo = req.body.additionalInfo || {};
-            if (typeof (arrAdditionalInfo) === 'string') arrAdditionalInfo = JSON.parse(arrAdditionalInfo);
-            if (typeof arrAdditionalInfo.scraped !== 'undefined') arrAdditionalInfo.scraped = !!+(arrAdditionalInfo.scraped);
+            additionalInfo = req.body.additionalInfo || {};
+            if (typeof (additionalInfo) === 'string') additionalInfo = JSON.parse(additionalInfo);
+            if (typeof additionalInfo.scraped !== 'undefined') additionalInfo.scraped = !!+(additionalInfo.scraped);
 
             parent = req.body.parent || '';
         }
 
         console.log('Creating a Forum : ', sTitle);
 
-        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, null, arrAdditionalInfo);
+        return await ForumsHelper.addForum(userAuthenticated, parent, sName, sTitle, sDescription, arrKeywords, sCountry, sCity, sLanguage, sIconPic, sCoverPic, sCoverColor, dbLatitude, dbLongitude, null, additionalInfo);
     },
 
     async getForum (req, res){

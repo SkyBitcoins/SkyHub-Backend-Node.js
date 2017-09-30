@@ -18,7 +18,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sTitle = '',  sShortDescription = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
-        let dbLatitude = 0, dbLongitude = 0, sCoverPic='', arrAdditionalInfo = {};
+        let dbLatitude = 0, dbLongitude = 0, sCoverPic='', additionalInfo = {};
 
         let parent = '';
 
@@ -44,19 +44,18 @@ module.exports = {
 
             sLanguage = req.body.language || sCountry;
 
-            arrAdditionalInfo = req.body.additionalInfo || {};
-            if (typeof (arrAdditionalInfo) === 'string') arrAdditionalInfo = JSON.parse(arrAdditionalInfo);
-            if (typeof arrAdditionalInfo.scraped !== 'undefined') arrAdditionalInfo.scraped = !!+(arrAdditionalInfo.scraped);
+            // additional information
+            additionalInfo = req.body.additionalInfo || {};
+            if (typeof (additionalInfo) === 'string') additionalInfo = JSON.parse(additionalInfo);
+            if (typeof additionalInfo.scraped !== 'undefined') additionalInfo.scraped = !!+(additionalInfo.scraped);
 
-            arrPrice = req.body.price || {};
-            if (typeof (arrPrice) === 'string') arrPrice = JSON.parse(arrPrice);
 
             parent = req.body.parent || '';
         }
 
         console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, arrAdditionalInfo);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, additionalInfo);
     },
 
     async getTopic (req, res){

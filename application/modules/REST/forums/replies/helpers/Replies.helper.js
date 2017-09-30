@@ -77,10 +77,10 @@ module.exports = {
     /*
      CREATING A NEW REPLY
      */
-    async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo){
+    async addReply (userAuthenticated, parent, parentReply, sTitle, sDescription, arrAttachments, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, additionalInfo){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
-        if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
+        if ((typeof additionalInfo === 'undefined')) additionalInfo = {};
 
         try{
             sCountry = sCountry || ''; sCity = sCity || ''; dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666; sTitle = sTitle || '';
@@ -115,10 +115,10 @@ module.exports = {
 
             console.log('parentReply',typeof parentReply);
 
-            if (((arrAdditionalInfo.scraped||false) === true)&&((arrAdditionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
-                dtCreation = arrAdditionalInfo.dtOriginal;
-                arrAdditionalInfo.dtRealCreation = new Date().getTime();
-                delete arrAdditionalInfo.dtOriginal;
+            if (((additionalInfo.scraped||false) === true)&&((additionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
+                dtCreation = additionalInfo.dtOriginal;
+                additionalInfo.dtRealCreation = new Date().getTime();
+                delete additionalInfo.dtOriginal;
             }
 
             reply.p(
@@ -137,7 +137,7 @@ module.exports = {
                     dtCreation: dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                     dtLastActivity: null,
                     nestedLevel: (parentReply !== null ? parentReply.p('nestedLevel') + 1 : 1),
-                    addInfo: arrAdditionalInfo, //Additional information
+                    addInfo: additionalInfo, //Additional information
                     parentReplyId: await MaterializedParentsHelper.getObjectId(parentReply),
                     parentId: await MaterializedParentsHelper.getObjectId(parent),
                     parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
@@ -175,7 +175,7 @@ module.exports = {
 
                         await reply.keepParentsStatistics();
 
-                        if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
+                        if ((additionalInfo.scraped||false) === true){ //it has been scrapped...
 
                         } else {
 

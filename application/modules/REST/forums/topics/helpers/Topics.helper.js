@@ -79,11 +79,11 @@ module.exports = {
     /*
      CREATING A NEW Topic
      */
-    async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, arrAdditionalInfo,
+    async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, additionalInfo,
                     arrPrice, arrShipping, arrRatingScoresList, arrReviewsList){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
-        if ((typeof arrAdditionalInfo === 'undefined')) arrAdditionalInfo = {};
+        if ((typeof additionalInfo === 'undefined')) arrAdditionalInfo = {};
 
         sCountry = sCountry || ''; sCity = sCity || '';
         dbLatitude = dbLatitude || -666; dbLongitude = dbLongitude || -666;
@@ -123,10 +123,10 @@ module.exports = {
         if (sShortDescription.length > 3)  shortDescription = sShortDescription;
         else shortDescription = SanitizeAdvanced.sanitizeAdvancedShortDescription(sDescription, 512);
 
-        if (((arrAdditionalInfo.scraped||false) === true)&&((arrAdditionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
-            dtCreation = arrAdditionalInfo.dtOriginal;
-            arrAdditionalInfo.dtRealCreation = new Date().getTime();
-            delete arrAdditionalInfo.dtOriginal;
+        if (((additionalInfo.scraped||false) === true)&&((additionalInfo.dtOriginal||'') !== '')) {//it has been scrapped...
+            dtCreation = additionalInfo.dtOriginal;
+            additionalInfo.dtRealCreation = new Date().getTime();
+            delete additionalInfo.dtOriginal;
         }
 
         topic.p(
@@ -144,7 +144,7 @@ module.exports = {
                 language: sLanguage.toLowerCase(),
                 dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
-                addInfo: arrAdditionalInfo, //Additional information
+                addInfo: additionalInfo, //Additional information
                 price: arrPrice,
                 shipping: arrShipping,
                 ratingScoresList: arrRatingScoresList,
@@ -189,7 +189,7 @@ module.exports = {
                     let SearchesHelper = require ('../../../searches/helpers/Searches.helper.js');
                     SearchesHelper.addTopicToSearch(null, topic); //async, but not awaited
 
-                    if ((arrAdditionalInfo.scraped||false) === true){ //it has been scrapped...
+                    if ((additionalInfo.scraped||false) === true){ //it has been scrapped...
 
                     } else {
 
