@@ -18,7 +18,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sTitle = '',  sShortDescription = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
-        let dbLatitude = 0, dbLongitude = 0, sCoverPic='', additionalInfo = {};
+        let dbLatitude = 0, dbLongitude = 0, sCoverPic='', additionalInfo = {}, price = {}, ratingScoresList = {}, shipping = {}, reviewsList = {}, details = {};
 
         let parent = '';
 
@@ -49,13 +49,28 @@ module.exports = {
             if (typeof (additionalInfo) === 'string') additionalInfo = JSON.parse(additionalInfo);
             if (typeof additionalInfo.scraped !== 'undefined') additionalInfo.scraped = !!+(additionalInfo.scraped);
 
+            details = req.body.details || {};
+            if (typeof (details) === 'string') details = JSON.parse(details);
+
+            price = req.body.price || {};
+            if (typeof (price) === 'string') price = JSON.parse(price);
+
+            ratingScoresList = req.body.ratingScoresList || {};
+            if (typeof (ratingScoresList) === 'string') ratingScoresList = JSON.parse(ratingScoresList);
+
+            shipping = req.body.shipping || {};
+            if (typeof (shipping) === 'string') shipping = JSON.parse(shipping);
+
+            reviewsList = req.body.reviewsList || {};
+            if (typeof (reviewsList) === 'string') reviewsList = JSON.parse(reviewsList);
+
 
             parent = req.body.parent || '';
         }
 
         console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, additionalInfo);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, additionalInfo, details, price, shipping, ratingScoresList, reviewsList);
     },
 
     async getTopic (req, res){

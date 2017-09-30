@@ -80,6 +80,10 @@ var TopicModel = redis.nohm.model('TopicModel', {
         //     "websiteName" : "Antena3"
         // }
 
+        details:{
+            type: 'json',
+        },
+
         price:{
             type: 'json',
         },

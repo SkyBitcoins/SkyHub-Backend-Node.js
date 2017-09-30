@@ -80,7 +80,7 @@ module.exports = {
      CREATING A NEW Topic
      */
     async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, additionalInfo,
-                    arrPrice, arrShipping, arrRatingScoresList, arrReviewsList){
+                    details, price, shipping, ratingScoresList, reviewsList){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
         if ((typeof additionalInfo === 'undefined')) arrAdditionalInfo = {};
@@ -145,10 +145,13 @@ module.exports = {
                 dtCreation:  dtCreation !== '' ? Date.parse(dtCreation) : new Date().getTime(),
                 dtLastActivity: null,
                 addInfo: additionalInfo, //Additional information
-                price: arrPrice,
-                shipping: arrShipping,
-                ratingScoresList: arrRatingScoresList,
-                reviewsList: arrReviewsList,
+
+                details: details,
+                price: price,
+                shipping: shipping,
+                ratingScoresList: ratingScoresList,
+                reviewsList: reviewsList,
+
                 parentId: await MaterializedParentsHelper.getObjectId(parentObject),
                 parents: (await MaterializedParentsHelper.findAllMaterializedParents(parent)).toString(),
                 breadcrumbs: await MaterializedParentsHelper.createBreadcrumbs(parentObject),
