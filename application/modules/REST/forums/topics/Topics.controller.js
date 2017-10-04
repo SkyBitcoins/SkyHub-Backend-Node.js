@@ -18,7 +18,7 @@ module.exports = {
         let userAuthenticated = await AuthenticatingUser.loginUser(req);
 
         let sTitle = '',  sShortDescription = '', sDescription = '', arrAttachments=[], arrKeywords = [], sCountry='', sCity='',sLanguage='';
-        let dbLatitude = 0, dbLongitude = 0, sCoverPic='', additionalInfo = {}, price = {}, ratingScoresList = {}, shipping = {}, reviewsList = {}, details = {};
+        let dbLatitude = 0, dbLongitude = 0, sCoverPic='', additionalInfo = {}, price = {}, ratingScoresList = {}, shipping = {}, reviewsList = {}, details = {}, authorInfo={};
 
         let parent = '';
 
@@ -49,6 +49,9 @@ module.exports = {
             if (typeof (additionalInfo) === 'string') additionalInfo = JSON.parse(additionalInfo);
             if (typeof additionalInfo.scraped !== 'undefined') additionalInfo.scraped = !!+(additionalInfo.scraped);
 
+            authorInfo = req.body.author || {};
+            if (typeof (authorInfo) === 'string') authorInfo = JSON.parse(authorInfo);
+
             details = req.body.details || {};
             if (typeof (details) === 'string') details = JSON.parse(details);
 
@@ -70,7 +73,7 @@ module.exports = {
 
         console.log('Creating a Topic : ', sTitle);
 
-        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, additionalInfo, details, price, shipping, ratingScoresList, reviewsList);
+        return await TopicsHelper.addTopic(userAuthenticated, parent, sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, null, additionalInfo, authorInfo, details, price, shipping, ratingScoresList, reviewsList);
     },
 
     async getTopic (req, res){

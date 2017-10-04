@@ -80,7 +80,7 @@ module.exports = {
      CREATING A NEW Topic
      */
     async addTopic (userAuthenticated, parent,  sTitle, sDescription, sShortDescription, arrAttachments, sCoverPic, arrKeywords, sCountry, sCity, sLanguage, dbLatitude, dbLongitude, dtCreation, additionalInfo,
-                    details, price, shipping, ratingScoresList, reviewsList){
+                    authorInfo, details, price, shipping, ratingScoresList, reviewsList){
 
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
         if ((typeof additionalInfo === 'undefined')) arrAdditionalInfo = {};
@@ -146,6 +146,7 @@ module.exports = {
                 dtLastActivity: null,
                 addInfo: additionalInfo, //Additional information
 
+                authorInfo: authorInfo,
                 details: details,
                 price: price,
                 shipping: shipping,
