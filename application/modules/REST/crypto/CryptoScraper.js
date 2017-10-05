@@ -16,19 +16,18 @@ var CryptoScraper = class{
 
     async scrapeCryptosTimer(){
 
-        console.log('scrapeAltcoinsTimer tick');
-
         let now = (new Date()).getTime();
         let seconds = now % (60*1000);
 
-        let diff = now-lastTimeScraped;
+        let diff = now - lastTimeScraped;
         let diffSeconds = diff % (1000);
 
-        if ((lastTimeScraped == 0)||(seconds == 0) || (diffSeconds > 60)){
+        console.log('scrapeAltcoinsTimer tick ',lastTimeScraped,"   ",seconds, "   ", diffSeconds);
 
+        if ((lastTimeScraped === 0) || (seconds === 0) || (diffSeconds >= 60)){
 
-            lastTimeScraped = now;
-            this.scrapeCryptos();
+            lastTimeScraped = (new Date()).getTime();
+            await this.scrapeCryptos();
 
         }
 
@@ -38,7 +37,7 @@ var CryptoScraper = class{
 
         await CryptoValues.scrapeAllCryptos();
 
-        //let currenciesValues = currenciesValues;
+
         SocketServer.serverSocket.sockets.emit('api/crypto/values',{result:true, lastTimeScraped: lastTimeScraped, currenciesValues: CryptoValues.currenciesValues, length: CryptoValues.currenciesValues.length })
 
     }
@@ -54,18 +53,19 @@ var CryptoScraper = class{
 
          await this.scrapeCryptosTimer();
 
-         let connectObservable = observable.Observable.create(observer => {
-             SocketServer.serverSocket.on("connection", (data) => {
-                 observer.next(data);
-             });
+         SocketServer.serverSocket.on("connection", function (socket) {
+             socket.emit('api/crypto/values', {result:true, lastTimeScraped: lastTimeScraped, currenciesValues: CryptoValues.currenciesValues});
          });
 
-         connectObservable.subscribe(socket => {
-
-             socket.emit('api/crypto/values', {result:'socket create', lastTimeScraped: lastTimeScraped, currenciesValues: CryptoValues.currenciesValues});
-
-             console.log('------------- socket emit');
-         });
+         // let connectObservable = observable.Observable.create(observer => {
+         //     SocketServer.serverSocket.on("connection", (data) => {
+         //         observer.next(data);
+         //     });
+         // });
+         //
+         // connectObservable.subscribe(socket => {
+         //     socket.emit('api/crypto/values', {result:'socket create', lastTimeScraped: lastTimeScraped, currenciesValues: CryptoValues.currenciesValues});
+         // });
 
 
 
