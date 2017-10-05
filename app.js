@@ -55,13 +55,6 @@ app.use(function(req, res, next) {
     next();
 });*/
 
-/*
-    Crypto and Altcoins
-*/
-
-let AltcoinsCraper = require('./application/modules/REST/altcoins/AltcoinsScraper.js');
-AltcoinsCraper.initializeAltcoinsScraper();
-
 /* 
 	ROUTING 
 */

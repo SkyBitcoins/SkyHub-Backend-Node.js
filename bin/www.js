@@ -110,3 +110,11 @@ server.listen(port, function(){
 console.log("IMPORTING serverSocket");
 serverSocket = require('../application/modules/socketServer/socketServer.controller.js');
 serverSocket = serverSocket.serverSocket;
+
+
+/*
+    Crypto and Altcoins
+*/
+
+let CryptoScraper = require('./../application/modules/REST/crypto/CryptoScraper.js');
+CryptoScraper.initializeCryptoScraper();
