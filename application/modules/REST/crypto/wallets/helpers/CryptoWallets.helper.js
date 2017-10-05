@@ -66,7 +66,7 @@ module.exports = {
     /*
      CREATING A NEW WALLET
      */
-    async addCryptoWallet (currency, productId, fiatValue, fiatCurrency, authorId, validated, dtCreation){
+    async addCryptoWallet (userAuthenticated, currency, productId, fiatValue, fiatCurrency, authorId, validated, dtCreation){
 
         if ((typeof validated === 'undefined')) validated = false;
         if ((typeof authorId === 'undefined')) authorId = '';
@@ -114,7 +114,7 @@ module.exports = {
 
                     //AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
 
-                    resolve( {result:true, forum: cryptoWallet.getPublicInformation() });
+                    resolve( {result:true, forum: cryptoWallet.getPublicInformation(userAuthenticated) });
 
                 }
             }.bind(this));
