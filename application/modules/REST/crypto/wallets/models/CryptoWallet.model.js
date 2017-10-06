@@ -6,7 +6,7 @@
 var redis = require ('../../../../DB/redis_nohm');
 var nohmIterator = require   ('../../../../DB/Redis/nohm/nohm.iterator.js');
 
-var CryptoWalletModel = redis.nohm.model('ForumModel', {
+var CryptoWalletModel = redis.nohm.model('CryptoWalletModel', {
 
     idGenerator: function (callback){
         return nohmIterator.generateCommonIterator(callback,"crypto");
@@ -34,7 +34,7 @@ var CryptoWalletModel = redis.nohm.model('ForumModel', {
 
             ]
         },
-        currency: {
+        cryptoCurrency: {
             type: 'string',
             validations: [
                 ['notEmpty'],
@@ -55,13 +55,7 @@ var CryptoWalletModel = redis.nohm.model('ForumModel', {
             ]
         },
         fiatValue: {
-            type: 'string',
-            validations: [
-                ['notEmpty'],
-                ['length', {
-                    min: 1
-                }]
-            ]
+            type: 'number',
         },
         fiatCurrency: {
             type: 'string',

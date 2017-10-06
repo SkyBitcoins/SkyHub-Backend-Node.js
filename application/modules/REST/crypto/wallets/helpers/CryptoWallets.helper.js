@@ -65,13 +65,13 @@ module.exports = {
     /*
      CREATING A NEW WALLET
      */
-    async addCryptoWallet (userAuthenticated, currency, productId, fiatValue, fiatCurrency, authorId, validated, dtCreation){
+    async addCryptoWallet (userAuthenticated, cryptoCurrency, productId, fiatValue, fiatCurrency, authorId, validated, dtCreation){
 
         if ((typeof validated === 'undefined')) validated = false;
         if ((typeof authorId === 'undefined')) authorId = '';
         if ((typeof dtCreation === 'undefined') || (dtCreation === null)) dtCreation = '';
 
-        if ((typeof currency === 'undefined')) currency= 'BTC';
+        if ((typeof cryptoCurrency === 'undefined')) cryptoCurrency= 'BTC';
 
         let address = '', wip = '';
 
@@ -81,14 +81,16 @@ module.exports = {
         wip = keyPair.toWIF(); // => Kxr9tQED9H44gCmp6HAdmemAzU3n84H3dGkuWTKvE23JgHMW8gct
 
         // Print your public key address
-        address = keyPair.getAddress() // => 14bZ7YWde4KdRb5YN7GYkToz3EHVCvRxkF
+        address = keyPair.getAddress(); // => 14bZ7YWde4KdRb5YN7GYkToz3EHVCvRxkF
 
-        let cryptoWallet = redis.nohm.factory('CryptoWallet');
+        let cryptoWallet = redis.nohm.factory('CryptoWalletModel');
 
         cryptoWallet.p(
             {
                 address: address,
                 wip: wip,
+                cryptoCurrency: cryptoCurrency,
+
                 productId: productId,
                 fiatValue: fiatValue,
                 fiatCurrency: fiatCurrency,
