@@ -6,8 +6,6 @@ let bitcoin = require('bitcoinjs-lib');
 
 let cryptoWalletModel = require ('../models/CryptoWallet.model.js');
 
-let ForumsSorter = require('../models/ForumsSorter.js');
-
 module.exports = {
 
     createDummyWallet (iIndex){
@@ -38,11 +36,12 @@ module.exports = {
 
             if ((typeof sId === 'undefined') || (sId === null) || (sId == []) )
                 resolve(null);
-            else
-                var ForumModel  = redis.nohm.factory('CryptoWalletModel', sId, function (err, forum) {
-                    if (err) resolve (null);
-                    else resolve (ForumModel);
+            else {
+                let CryptoWalletModel = redis.nohm.factory('CryptoWalletModel', sId, function (err, wallet) {
+                    if (err) resolve(null);
+                    else resolve(wallet);
                 });
+            }
 
         });
     },
@@ -114,7 +113,7 @@ module.exports = {
 
                     //AllPagesList.keepAllPagesList(forum.p('parentId'), forum, false);
 
-                    resolve( {result:true, forum: cryptoWallet.getPublicInformation(userAuthenticated) });
+                    resolve( {result:true, cryptoWallet: cryptoWallet.getPublicInformation(userAuthenticated) });
 
                 }
             }.bind(this));

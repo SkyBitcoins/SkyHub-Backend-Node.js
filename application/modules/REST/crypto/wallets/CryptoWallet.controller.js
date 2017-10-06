@@ -18,7 +18,7 @@ module.exports = {
 
         let currency = '', productId = '', fiatValue = 0.0, fiatCurrency = '', authorId='';
 
-        //console.log("@@@@@@@@@@@@@@ postAddCryptoWallet request", userAuthenticated);
+        //console.log("@@@@@@@@@@@@@@ postAddCryptoWallet  request", userAuthenticated);
 
         if (req.hasOwnProperty('body')){
             currency = req.body.currency || '';

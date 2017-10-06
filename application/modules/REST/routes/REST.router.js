@@ -8,6 +8,7 @@ let UsersCtrl = require ('../users/Users.controller.js');
 let FunctionsCtrl = require ('../common/functions/functions.controller.js');
 
 let ForumsCtrl = require ('../forums/forums/Forums.controller.js');
+let CryptoWalletCtrl = require ('../crypto/wallets/CryptoWallet.controller.js');
 let TopicsCtrl = require ('../forums/topics/Topics.controller.js');
 let RepliesCtrl = require ('../forums/replies/Replies.controller.js');
 let VotingCtrl = require ('../voting/Voting.controller.js');
@@ -99,6 +100,11 @@ router.get('/replies/get-reply', async  function (req, res, next){
 
 router.get('/replies/add-reply', async  function (req, res, next){
     res.json( await RepliesCtrl.postAddReply(req, res))
+});
+
+//              CRYPTO
+router.get('/crypto/add-new-wallet', async function (req,res,next){
+    res.json( {message: await CryptoWalletCtrl.postAddCryptoWallet() });
 });
 
 //              SEARCH/META/SLUGs
@@ -244,6 +250,9 @@ router.get('/test/mongo-importer', async function (req,res,next){
 
 
 
+
+
+
 /*
             FOR SOCKET REST
  */
@@ -373,6 +382,13 @@ router.processSocketRoute = function (socket)
         socket.emit("api/topics/add-topic", res);
     });
 
+    //              CRYPTO
+    socket.on('api/crypto/add-new-wallet', async function (data){
+        data.body = data;
+
+        let res = await CryptoWalletCtrl.postAddCryptoWallet(data, socket);
+        socket.emit('api/crypto/add-new-wallet', res);
+    });
 
     socket.on("api/content/get-top-content", async function (data){
         data.body = data;
