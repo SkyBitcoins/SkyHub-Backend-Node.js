@@ -57,19 +57,6 @@ var CryptoScraper = class{
              socket.emit('api/crypto/values', {result:true, lastTimeScraped: lastTimeScraped, currenciesValues: CryptoValues.currenciesValues});
          });
 
-         // let connectObservable = observable.Observable.create(observer => {
-         //     SocketServer.serverSocket.on("connection", (data) => {
-         //         observer.next(data);
-         //     });
-         // });
-         //
-         // connectObservable.subscribe(socket => {
-         //     socket.emit('api/crypto/values', {result:'socket create', lastTimeScraped: lastTimeScraped, currenciesValues: CryptoValues.currenciesValues});
-         // });
-
-
-
-
     }
 
 

@@ -118,3 +118,7 @@ serverSocket = serverSocket.serverSocket;
 
 let CryptoScraper = require('./../application/modules/REST/crypto/CryptoScraper.js');
 CryptoScraper.initializeCryptoScraper();
+
+
+let CryptoWalletBallanceSocket = require('./../application/modules/REST/crypto/ballance/CryptoWalletBallanceSocket.js');
+CryptoWalletBallanceSocket.startService(testing=true);
