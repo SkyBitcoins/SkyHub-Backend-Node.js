@@ -248,7 +248,11 @@ router.get('/test/mongo-importer', async function (req,res,next){
     res.json( {message: await MongoImporter.run() });
 });
 
-
+//              TESTING CRYPTO
+router.get('/test/crypto/add-new-fake-transaction/:address/:amount', async function (req,res,next){
+    let TestingCryptoWalletBallanceSocket = require ('./../crypto/ballance/testing-ballance/TestingCryptoWalletBallanceSocket.js');
+    res.json( {message: await TestingCryptoWalletBallanceSocket.generateFakeTransaction(req.params.address, req.params.amount) });
+});
 
 
 

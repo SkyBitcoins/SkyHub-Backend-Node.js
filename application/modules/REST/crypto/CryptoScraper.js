@@ -22,7 +22,7 @@ var CryptoScraper = class{
         let diff = now - lastTimeScraped;
         let diffSeconds = diff % (1000);
 
-        console.log('scrapeAltcoinsTimer tick ',lastTimeScraped,"   ",seconds, "   ", diffSeconds);
+        //console.log('scrapeAltcoinsTimer tick ',lastTimeScraped,"   ",seconds, "   ", diffSeconds);
 
         if ((lastTimeScraped === 0) || (seconds === 0) || (diffSeconds >= 60)){
 

@@ -27,8 +27,8 @@ class CryptoWalletBallanceSocket {
             let TestingCryptoWalletBallanceSocket = require ('./testing-ballance/TestingCryptoWalletBallanceSocket.js');
             console.log("testing wallet",TestingCryptoWalletBallanceSocket.port, TestingCryptoWalletBallanceSocket.server);
 
-            let that = this;
-            setTimeout(function (){ that.createClientSocket('wss://localhost:'+TestingCryptoWalletBallanceSocket.port+'/') }, 3000);
+            this.createClientSocket('ws://localhost:'+TestingCryptoWalletBallanceSocket.port+'/');
+
 
         } else
         {
@@ -39,9 +39,16 @@ class CryptoWalletBallanceSocket {
 
     createClientSocket(address) {
 
-        this.socket = new WebSocket(address);
+        const ws = new WebSocket(address);
+
+        this.socket = ws;
 
         console.log('                  @@@@@@@ createClientSocket');
+
+        this.socket.onopen = function() {
+            console.log('open createClientSocket')
+        };
+
         this.setSocketReadObservable("open").subscribe(response => {
 
             console.log('####### Client has connected to the server!');
@@ -53,18 +60,32 @@ class CryptoWalletBallanceSocket {
 
             data = JSON.parse(data);
 
-            console.log("##################### message", data);
+            //console.log("##################### message", data);
 
             if (data.op === "utx"){
 
-                let inputValue = 0, outputValue=0;
-                for (let i=0; data.x.inputs.length; i++)
-                    inputValue += data.x.inputs[i].prev_out.value;
+                let inputs = {};
+                let outputs = {};
 
-                for (let i=0; data.x.out.length; i++)
-                    outputValue += data.x.out[i].value;
+                inputs.total = 0; outputs.total = 0;
 
-                console.log("#################### received       ",inputValue, outputValue);
+                for (let i=0; i < data.x.inputs.length; i++) {
+                    inputs[i] = {};
+                    inputs[i].value = data.x.inputs[i].prev_out.value;
+                    inputs[i].addr = data.x.inputs[i].prev_out.addr;
+
+                    inputs.total += inputs[i].value;
+                }
+
+                for (let i=0; i < data.x.out.length; i++) {
+                    outputs[i] = {};
+                    outputs[i].value = data.x.out[i].value;
+                    outputs[i].addr = data.x.out[i].addr;
+
+                    outputs.total += outputs[i].value;
+                }
+
+                console.log("#################### received       ",inputs, outputs);
 
             }
 
