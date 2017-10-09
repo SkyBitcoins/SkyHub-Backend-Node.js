@@ -18,13 +18,15 @@ class CryptoWalletBallanceSocket {
         console.log('               @@@@@@ Socket CryptoWalletBallance constructor');
     }
 
-    startService(testing){
+    startService(onNewTransactionReceived,testing){
 
         if (typeof testing === 'undefined') testing = false;
 
+        this.onNewTransactionReceived = onNewTransactionReceived;
+
         if (testing === true){
 
-            let TestingCryptoWalletBallanceSocket = require ('./testing-ballance/TestingCryptoWalletBallanceSocket.js');
+            let TestingCryptoWalletBallanceSocket = require ('../testing-ballance/TestingCryptoWalletBallanceSocket.js');
             console.log("testing wallet",TestingCryptoWalletBallanceSocket.port, TestingCryptoWalletBallanceSocket.server);
 
             this.createClientSocket('ws://localhost:'+TestingCryptoWalletBallanceSocket.port+'/');
@@ -62,6 +64,9 @@ class CryptoWalletBallanceSocket {
 
             //console.log("##################### message", data);
 
+            //Process and collect the data from the new transaction
+            // transaction sample: https://blockchain.info/api/api_websocket
+
             if (data.op === "utx"){
 
                 let inputs = {};
@@ -86,6 +91,7 @@ class CryptoWalletBallanceSocket {
                 }
 
                 console.log("#################### received       ",inputs, outputs);
+                this.onNewTransactionReceived(inputs, outputs, 'satoshi');
 
             }
 
